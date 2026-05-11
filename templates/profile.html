@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block title %}Profile{% endblock %}
+
+{% block content %}
+<h2>Profile</h2>
+
+<form id="profileForm">
+  <input id="username" placeholder="Username">
+  <input id="email" placeholder="Email">
+  <input id="first_name" placeholder="First Name">
+  <input id="last_name" placeholder="Last Name">
+  <button>Update</button>
+</form>
+
+<h3>Change Password</h3>
+
+<form id="passwordForm">
+  <input type="password" id="current_password" placeholder="Current Password">
+  <input type="password" id="new_password" placeholder="New Password">
+  <input type="password" id="confirm_new_password" placeholder="Confirm Password">
+  <button>Change Password</button>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+const token = localStorage.getItem('access_token');
+
+fetch('/profile', {
+  headers: { Authorization: `Bearer ${token}` }
+})
+.then(r => r.json())
+.then(d => {
+  username.value = d.username;
+  email.value = d.email;
+  first_name.value = d.first_name;
+  last_name.value = d.last_name;
+});
+
+profileForm.onsubmit = async (e) => {
+  e.preventDefault();
+
+  await fetch('/profile', {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      username: username.value,
+      email: email.value,
+      first_name: first_name.value,
+      last_name: last_name.value
+    })
+  });
+
+  alert("Updated");
+};
+
+passwordForm.onsubmit = async (e) => {
+  e.preventDefault();
+
+  const res = await fetch('/profile/change-password', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      current_password: current_password.value,
+      new_password: new_password.value,
+      confirm_new_password: confirm_new_password.value
+    })
+  });
+
+  if (res.ok) {
+    localStorage.clear();
+    window.location.href = "/login";
+  }
+};
+</script>
+{% endblock %}
