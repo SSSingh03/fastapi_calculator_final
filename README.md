@@ -104,3 +104,138 @@ tests/
 .github/
 └── workflows/
     └── test.yml
+```
+
+---
+
+## Running the Application
+
+Clone the repository:
+
+```bash
+git clone https://github.com/SSSingh03/fastapi_calculator_final.git
+cd fastapi_calculator_final
+```
+
+Start the application:
+
+```bash
+docker compose up --build
+```
+
+Open the application:
+
+```text
+http://localhost:8000
+```
+
+Initialize the database tables if needed:
+
+```bash
+docker compose exec web python -c "from app.database import Base, engine; from app.models.user import User; from app.models.calculation import Calculation; Base.metadata.create_all(bind=engine)"
+```
+
+---
+
+## Running Tests
+
+Run all tests:
+
+```bash
+docker compose exec web pytest -v
+```
+
+Run unit tests:
+
+```bash
+docker compose exec web pytest tests/unit/ -v
+```
+
+Run integration tests:
+
+```bash
+docker compose exec web pytest tests/integration/ -v
+```
+
+Run E2E tests:
+
+```bash
+docker compose exec web pytest tests/e2e/ -v
+```
+
+Current result:
+
+```text
+103 passed, 1 skipped
+```
+
+---
+
+## GitHub Actions CI/CD
+
+The GitHub Actions pipeline automatically:
+
+- Runs tests
+- Performs security scans
+- Builds the Docker image
+- Pushes the image to DockerHub
+
+Pipeline status:
+
+```text
+test: pass
+security: pass
+deploy: pass
+```
+
+---
+
+## DockerHub Repository
+
+```text
+https://hub.docker.com/r/ssingh1119/fastapi_calculator_final
+```
+
+---
+
+## GitHub Repository
+
+```text
+https://github.com/SSSingh03/fastapi_calculator_final
+```
+
+---
+
+## Final Project Feature
+
+The advanced feature implemented for this project is User Profile Management and Password Change functionality.
+
+Authenticated users can:
+
+- Update profile information
+- Change passwords securely
+- Re-authenticate using updated credentials
+
+The feature includes backend route handling, frontend integration, database updates, validation, authentication, and automated testing.
+
+---
+
+## Security Features
+
+- JWT-based authentication
+- Password hashing with bcrypt
+- Protected routes
+- Password verification before updates
+- GitHub Actions security scanning with Trivy
+
+---
+
+## Learning Outcomes Addressed
+
+- CLO3: Create Python applications with automated testing
+- CLO4: Configure GitHub Actions for CI/CD automation
+- CLO9: Apply Docker containerization techniques
+- CLO10: Create and test REST APIs using FastAPI
+- CLO11: Integrate SQL databases using SQLAlchemy
+- CLO12: Validate JSON data using Pydantic
+- CLO13: Implement secure authentication and authorization
